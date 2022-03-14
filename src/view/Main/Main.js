@@ -3,6 +3,7 @@ import './Main.css';
 import Filter from '../../components/Filter/Filter';
 import Search from '../../components/Search/Search';
 import fetchCountries from '../../services/countries';
+import CountryCard from '../../components/CountryCard/CountryCard';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
@@ -24,7 +25,9 @@ export default function Main() {
         <Filter />
         <Search />
       </div>
-      <div className="country-container">{/* map here */}</div>
+      <div className="country-container">
+        <CountryCard {...countries[1]} />{' '}
+      </div>
     </div>
   );
 }
