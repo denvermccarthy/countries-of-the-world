@@ -7,6 +7,16 @@ import CountryCard from '../../components/CountryCard/CountryCard';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
+  const [selected, setSelected] = useState('All');
+  const continents = [
+    'All',
+    'Africa',
+    'Asia',
+    'Europe',
+    'North America',
+    'South America',
+    'Oceania',
+  ];
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -19,14 +29,20 @@ export default function Main() {
     };
     fetch();
   }, []);
+
+  const filter = () =>
+    countries.filter((country) => country.continent === selected || selected === 'All');
+
   return (
     <div>
       <div className="controls">
-        <Filter />
+        <Filter continents={continents} callback={setSelected} />
         <Search />
       </div>
       <div className="country-container">
-        <CountryCard {...countries[1]} />{' '}
+        {filter().map((country) => (
+          <CountryCard key={country.id} {...country} />
+        ))}
       </div>
     </div>
   );
