@@ -7,6 +7,7 @@ import CountryCard from '../../components/CountryCard/CountryCard';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
+  const [results, setResults] = useState([]);
   const [selected, setSelected] = useState('All');
   const [query, setQuery] = useState('');
   const continents = [
@@ -30,9 +31,12 @@ export default function Main() {
     fetch();
   }, []);
 
-  const filtered = countries.filter(
-    (country) => country.continent === selected || selected === 'All'
-  );
+  useEffect(() => {
+    const filtered = countries.filter(
+      (country) => country.continent === selected || selected === 'All'
+    );
+    setResults(filtered);
+  }, [countries, selected]);
 
   // filter function search should push a true if country.name(lowercase) includes query
   const search = (arr) =>
@@ -51,7 +55,7 @@ export default function Main() {
         <Search query={query} setQuery={setQuery} />
       </div>
       <div className="country-container">
-        {search(filtered).map((country) => (
+        {search(results).map((country) => (
           <CountryCard key={country.id} {...country} />
         ))}
       </div>

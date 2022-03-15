@@ -1,7 +1,7 @@
 import React from 'react';
 import './Search.css';
 
-export default function Search({ query, setQuery }) {
+export default function Search({ setQuery }) {
   // on change filter array of countries
 
   return (
