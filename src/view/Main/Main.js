@@ -4,11 +4,14 @@ import Filter from '../../components/Filter/Filter';
 import Search from '../../components/Search/Search';
 import fetchCountries from '../../services/countries';
 import CountryCard from '../../components/CountryCard/CountryCard';
+import Sort from '../../components/Sort/Sort';
 
 export default function Main() {
   const [countries, setCountries] = useState([]);
   const [results, setResults] = useState([]);
   const [selected, setSelected] = useState('All');
+  const [sorted, setSort] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const continents = [
     'All',
@@ -24,6 +27,7 @@ export default function Main() {
       try {
         const resp = await fetchCountries();
         setCountries(resp);
+        setLoading(false);
       } catch (error) {
         alert(error.message);
       }
@@ -38,6 +42,7 @@ export default function Main() {
     setResults(filtered);
   }, [countries, selected]);
 
+  if (loading) return <div>Loading....</div>;
   // filter function search should push a true if country.name(lowercase) includes query
   const search = (arr) =>
     arr.filter((country) => {
@@ -53,6 +58,7 @@ export default function Main() {
       <div className="controls">
         <Filter continents={continents} callback={setSelected} />
         <Search query={query} setQuery={setQuery} />
+        <Sort {...{ setSort, sorted, setResults }} />
       </div>
       <div className="country-container">
         {search(results).map((country) => (
